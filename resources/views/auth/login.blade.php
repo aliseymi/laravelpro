@@ -6,8 +6,12 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">{{ __('Login') }}</div>
-
                     <div class="card-body">
+                        <div class="col-md-8 offset-md-4 mb-3">
+                            <a href="{{route('auth.google')}}" class="btn btn-danger">{{__('Login With Google')}}</a>
+                            <a href="{{route('auth.github')}}" class="btn btn-secondary">{{__('Login With Github')}}</a>
+                        </div>
+
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
 
