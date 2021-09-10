@@ -33,7 +33,8 @@ class GoogleAuthController extends Controller
             return redirect('/');
         } catch (\Exception $e) {
             //TODO show error
-            return 'error';
+            alert()->error('ورود با حساب گوگل امکان پذیر نبود','خطایی رخ داد')->persistent('بسیار خب');
+            return redirect('/login');
         }
     }
 }
