@@ -31,7 +31,8 @@ class GithubAuthController extends Controller
             }
             return redirect('/');
         }catch(\Exception $e){
-            return 'error';
+            alert()->error('ورود با گیت هاب امکان پذیر نبود','خطایی رخ داد')->persistent('بسیار خب');
+            return redirect('/login');
         }
 
     }
