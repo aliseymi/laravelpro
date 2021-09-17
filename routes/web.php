@@ -19,22 +19,27 @@ Route::get('/', function () {
 
 Auth::routes(['verify' => true]);
 
-Route::get('auth/google',[\App\Http\Controllers\Auth\GoogleAuthController::class,'redirect'])->name('auth.google');
-Route::get('auth/google/callback',[\App\Http\Controllers\Auth\GoogleAuthController::class,'callback']);
+Route::get('auth/google', [\App\Http\Controllers\Auth\GoogleAuthController::class, 'redirect'])->name('auth.google');
+Route::get('auth/google/callback', [\App\Http\Controllers\Auth\GoogleAuthController::class, 'callback']);
 
-Route::get('auth/github',[\App\Http\Controllers\Auth\GithubAuthController::class,'redirect'])->name('auth.github');
-Route::get('auth/github/callback',[\App\Http\Controllers\Auth\GithubAuthController::class,'callback']);
+Route::get('auth/token',[\App\Http\Controllers\Auth\AuthTokenController::class,'getToken'])->name('2fa.token');
+Route::post('auth/token',[\App\Http\Controllers\Auth\AuthTokenController::class,'postToken']);
+
+Route::get('auth/github', [\App\Http\Controllers\Auth\GithubAuthController::class, 'redirect'])->name('auth.github');
+Route::get('auth/github/callback', [\App\Http\Controllers\Auth\GithubAuthController::class, 'callback']);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/secret',function (){
+Route::get('/secret', function () {
     return 'secret';
-})->middleware(['auth','password.confirm']);
+})->middleware(['auth', 'password.confirm']);
 
-Route::middleware('auth')->group(function (){
-    Route::get('profile',[\App\Http\Controllers\ProfileController::class,'index'])->name('profile');
-    Route::get('profile/twofactor',[\App\Http\Controllers\ProfileController::class,'manageTwoFactor'])->name('profile.2fa.manage');
-    Route::post('profile/twofactor',[\App\Http\Controllers\ProfileController::class,'postMangeTwoFactor']);
+Route::middleware('auth')->group(function () {
+    Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
+    Route::get('profile/twofactor', [\App\Http\Controllers\ProfileController::class, 'manageTwoFactor'])->name('profile.2fa.manage');
+    Route::post('profile/twofactor', [\App\Http\Controllers\ProfileController::class, 'postMangeTwoFactor']);
+    Route::get('profile/twofactor/phone', [\App\Http\Controllers\ProfileController::class, 'getPhoneVerify'])->name('profile.2fa.phone');
+    Route::post('profile/twofactor/phone', [\App\Http\Controllers\ProfileController::class, 'postPhoneVerify']);
 });
 
 

@@ -10,29 +10,29 @@ use Laravel\Socialite\Facades\Socialite;
 
 class GoogleAuthController extends Controller
 {
+    use TwoFactorAuthentication;
     public function redirect()
     {
         return Socialite::driver('google')->redirect();
     }
 
-    public function callback()
+    public function callback(Request $request)
     {
         try {
             $googleUser = Socialite::driver('google')->user();
             $user = User::where('email', $googleUser->email)->first();
-            if ($user) {
-                auth()->loginUsingId($user->id);
-            } else {
-                $newUser = User::create([
+            if (!$user) {
+                $user = User::create([
                     'name' => $googleUser->name,
                     'email' => $googleUser->email,
                     'password' => bcrypt(\Str::random(16))
                 ]);
-                auth()->loginUsingId($newUser->id);
             }
-            return redirect('/');
+
+            auth()->loginUsingId($user->id);
+            return $this->loggedIn($request,$user) ? : redirect('/');
         } catch (\Exception $e) {
-            //TODO show error
+            //TODO Log error
             alert()->error('ورود با حساب گوگل امکان پذیر نبود','خطایی رخ داد')->persistent('بسیار خب');
             return redirect('/login');
         }
