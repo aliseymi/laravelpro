@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+//    $user = \App\Models\User::find(4);
+//    $user->notify(new \App\Notifications\LoginToWebsiteNotification());
     return view('welcome');
 });
 
