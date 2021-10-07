@@ -43,7 +43,7 @@ class LoginToWebsiteNotification extends Notification
         return (new MailMessage)
                 ->from('ali@gmail.com','seymi')
                 ->subject('You are LoggedIn')
-                 ->view('emails.login-to-website');
+                 ->markdown('emails.login-to-website');
     }
 
     /**
