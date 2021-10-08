@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
 //    $user = \App\Models\User::find(4);
-//    $user->notify(new \App\Notifications\LoginToWebsiteNotification());
+//    $user->notify(new \App\Notifications\LoginToWebsite());
     return view('welcome');
 });
 
@@ -36,12 +36,12 @@ Route::get('/secret', function () {
     return 'secret';
 })->middleware(['auth', 'password.confirm']);
 
-Route::middleware('auth')->group(function () {
-    Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
-    Route::get('profile/twofactor', [\App\Http\Controllers\ProfileController::class, 'manageTwoFactor'])->name('profile.2fa.manage');
-    Route::post('profile/twofactor', [\App\Http\Controllers\ProfileController::class, 'postMangeTwoFactor']);
-    Route::get('profile/twofactor/phone', [\App\Http\Controllers\ProfileController::class, 'getPhoneVerify'])->name('profile.2fa.phone');
-    Route::post('profile/twofactor/phone', [\App\Http\Controllers\ProfileController::class, 'postPhoneVerify']);
+Route::prefix('profile')->namespace('App\Http\Controllers\Profile')->middleware('auth')->group(function () {
+    Route::get('/', 'indexController@index')->name('profile');
+    Route::get('twofactor', 'twoFactorAuthController@manageTwoFactor')->name('profile.2fa.manage');
+    Route::post('twofactor', 'twoFactorAuthController@postMangeTwoFactor');
+    Route::get('twofactor/phone', 'tokenAuthController@getPhoneVerify')->name('profile.2fa.phone');
+    Route::post('twofactor/phone', 'tokenAuthCOntroller@postPhoneVerify');
 });
 
 

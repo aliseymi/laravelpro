@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\ActiveCode;
+use App\Notifications\LoginToWebsite;
+use App\Notifications\LoginToWebsite as LoginToWebsiteNotification;
 use http\Client\Curl\User;
 use Illuminate\Http\Request;
 
@@ -39,6 +41,7 @@ class AuthTokenController extends Controller
         }
 
         if(auth()->loginUsingId($user->id,$request->session()->get('auth.remember'))){
+            $user->notify(new LoginToWebsiteNotification());
             $user->activeCode()->delete();
             alert()->success('با موفقیت لاگین شدید','کد صحیح است');
             return redirect('/');
