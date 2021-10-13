@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\fooService;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function (FooService $fooService) {
 //    $user = \App\Models\User::find(4);
 //    $user->notify(new \App\Notifications\LoginToWebsite());
+
+//    $container = new \App\Container();
+//    $container->bind('fooService',function (){
+//        return new FooService();
+//    });
+    dd($fooService->doSomething());
     return view('welcome');
 });
 
@@ -41,7 +48,7 @@ Route::prefix('profile')->namespace('App\Http\Controllers\Profile')->middleware(
     Route::get('twofactor', 'twoFactorAuthController@manageTwoFactor')->name('profile.2fa.manage');
     Route::post('twofactor', 'twoFactorAuthController@postMangeTwoFactor');
     Route::get('twofactor/phone', 'tokenAuthController@getPhoneVerify')->name('profile.2fa.phone');
-    Route::post('twofactor/phone', 'tokenAuthCOntroller@postPhoneVerify');
+    Route::post('twofactor/phone', 'tokenAuthController@postPhoneVerify');
 });
 
 
