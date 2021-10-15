@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Services\FooService;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
