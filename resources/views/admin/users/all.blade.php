@@ -11,16 +11,19 @@
                     <h3 class="card-title">کاربران</h3>
 
                     <div class="card-tools d-flex">
-                        <div class="input-group input-group-sm" style="width: 150px;">
-                            <input type="text" name="table_search" class="form-control float-right" placeholder="جستجو">
+                        <form action="">
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <input type="text" name="search" class="form-control float-right" placeholder="جستجو" value="{{ request('search') }}">
 
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
 
                         <div class="btn-group-sm mr-1">
                             <a href="{{ route('admin.users.create') }}" class="btn btn-info">ایجاد کاربر جدید<i class="fa fa-plus pr-1"></i></a>
+                            <a href="{{ request()->fullUrlWithQuery(['admin' => 1]) }}" class="btn btn-warning">کاربران ادمین<i class="fa fa-user pr-1"></i></a>
                         </div>
                     </div>
                 </div>
