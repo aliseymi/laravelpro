@@ -20,12 +20,18 @@ class GithubAuthController extends Controller
         try {
             $githubUser = Socialite::driver('github')->user();
             $user = User::where('email',$githubUser->email)->first();
+
             if(!$user){
                 $user = User::create([
                     'name' => $githubUser->name,
                     'email' => $githubUser->email,
-                    'password' => bcrypt(\Str::random(16))
+                    'password' => \Str::random(16),
+                    'two_factor_type' => 'off'
                 ]);
+            }
+
+            if(! $user->hasVerifiedEmail()){
+                $user->markEmailAsVerified();
             }
             auth()->loginUsingId($user->id);
             return $this->loggedIn($request,$user) ? : redirect('/');
