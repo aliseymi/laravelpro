@@ -48,6 +48,16 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
@@ -102,5 +112,15 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isStaff()
     {
         return $this->is_staff;
+    }
+
+    public function hasRole($role)
+    {
+        return !! $role->intersect($this->roles)->all();
+    }
+
+    public function hasPermission($permission)
+    {
+        return $this->permissions->contains('name',$permission->name) || $this->hasRole($permission->roles);
     }
 }

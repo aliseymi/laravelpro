@@ -1,6 +1,6 @@
 <?php
 
-use App\Services\fooService;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,7 +22,12 @@ Route::get('/', function () {
 //    $container->bind('fooService',function (){
 //        return new FooService();
 //    });
-    return view('welcome');
+
+    if(Gate::allows('edit-user')){
+        return view('welcome');
+    }
+
+    return 'no';
 });
 
 Auth::routes(['verify' => true]);

@@ -49,13 +49,15 @@
                                 @else
                                     <td><span class="badge badge-danger">غیر فعال</span></td>
                                 @endif
-                                <td class="d-flex">
+                                <td class="d-flex justify-content-center">
                                     <form action="{{ route('admin.users.destroy',['user' => $user->id]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                     <button class="btn btn-sm btn-danger ml-1" type="submit">حذف</button>
                                     </form>
-                                    <a href="{{ route('admin.users.edit',['user' => $user->id]) }}" class="btn btn-sm btn-primary">ویرایش</a>
+                                    @can('edit',$user)
+                                        <a href="{{ route('admin.users.edit',['user' => $user->id]) }}" class="btn btn-sm btn-primary">ویرایش</a>
+                                    @endcan
                                 </td>
                             </tr>
                         @endforeach
