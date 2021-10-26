@@ -23,11 +23,11 @@ Route::get('/', function () {
 //        return new FooService();
 //    });
 
-    if(Gate::allows('edit-user')){
-        return view('welcome');
-    }
+//    if(Gate::allows('edit-user')){
+//        return view('welcome');
+//    }
 
-    return 'no';
+    return view('welcome');
 });
 
 Auth::routes(['verify' => true]);
