@@ -55,9 +55,11 @@
                                         @method('DELETE')
                                     <button class="btn btn-sm btn-danger ml-1" type="submit">حذف</button>
                                     </form>
-                                    @can('edit',$user)
-                                        <a href="{{ route('admin.users.edit',['user' => $user->id]) }}" class="btn btn-sm btn-primary">ویرایش</a>
-                                    @endcan
+
+                                    <a href="{{ route('admin.users.edit',['user' => $user->id]) }}" class="btn btn-sm btn-primary ml-1">ویرایش</a>
+                                    @if($user->isStaff())
+                                        <a href="{{ route('admin.users.permissions',['user' => $user->id]) }}" class="btn btn-sm btn-warning">دسترسی ها</a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

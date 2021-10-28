@@ -27,8 +27,8 @@
                     <li class="nav-item">
                         <a href="/admin" class="nav-link {{ isActive('admin.') }}"><i class="nav-icon fa fa-dashboard"></i>پنل مدیریت</a>
                     </li>
-                    <li class="nav-item has-treeview {{ isActive(['admin.users.index','admin.users.create','admin.users.edit'],'menu-open') }}">
-                        <a href="#" class="nav-link {{ isActive(['admin.users.index','admin.users.create','admin.users.edit']) }}">
+                    <li class="nav-item has-treeview {{ isActive(['admin.users.index','admin.users.create','admin.users.edit','admin.users.permissions'],'menu-open') }}">
+                        <a href="#" class="nav-link {{ isActive(['admin.users.index','admin.users.create','admin.users.edit','admin.users.permissions']) }}">
                             <i class="nav-icon fa fa-users"></i>
                             <p>
                                 کاربران
@@ -37,7 +37,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{ route('admin.users.index') }}" class="nav-link {{ isActive(['admin.users.index','admin.users.create','admin.users.edit']) }}">
+                                <a href="{{ route('admin.users.index') }}" class="nav-link {{ isActive(['admin.users.index','admin.users.create','admin.users.edit','admin.users.permissions']) }}">
                                     <i class="fa fa-circle-o nav-icon"></i>
                                     <p>لیست کاربران</p>
                                 </a>

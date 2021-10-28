@@ -59,4 +59,13 @@
             </div>
         </div>
     </div>
+
+    @slot('script')
+        <script>
+            $('#selectPermission').select2({
+                'placeholder': 'لطفا دسترسی های مورد نظر را انتخاب کنید',
+                dir: 'rtl'
+            });
+        </script>
+    @endslot
 @endcomponent
