@@ -22,7 +22,9 @@
                         </form>
 
                         <div class="btn-group-sm mr-1">
-                            <a href="{{ route('admin.permissions.create') }}" class="btn btn-info">ایجاد دسترسی جدید<i class="fa fa-plus pr-1"></i></a>
+                            @can('create-permission')
+                                <a href="{{ route('admin.permissions.create') }}" class="btn btn-info">ایجاد دسترسی جدید<i class="fa fa-plus pr-1"></i></a>
+                            @endcan
                         </div>
                     </div>
                 </div>
@@ -41,12 +43,16 @@
                                 <td>{{ $permission->name }}</td>
                                 <td>{{ $permission->label }}</td>
                                 <td class="d-flex justify-content-center">
-                                    <form action="{{ route('admin.permissions.destroy',['permission' => $permission->id]) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                    <button class="btn btn-sm btn-danger ml-1" type="submit">حذف</button>
-                                    </form>
-                                    <a href="{{ route('admin.permissions.edit',['permission' => $permission->id]) }}" class="btn btn-sm btn-primary">ویرایش</a>
+                                    @can('delete-permission')
+                                        <form action="{{ route('admin.permissions.destroy',['permission' => $permission->id]) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-sm btn-danger ml-1" type="submit">حذف</button>
+                                        </form>
+                                    @endcan
+                                    @can('edit-permission')
+                                            <a href="{{ route('admin.permissions.edit',['permission' => $permission->id]) }}" class="btn btn-sm btn-primary">ویرایش</a>
+                                    @endcan
                                 </td>
                             </tr>
                         @endforeach

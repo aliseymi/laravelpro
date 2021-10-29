@@ -22,7 +22,9 @@
                         </form>
 
                         <div class="btn-group-sm mr-1">
-                            <a href="{{ route('admin.roles.create') }}" class="btn btn-info">ایجاد مقام جدید<i class="fa fa-plus pr-1"></i></a>
+                            @can('create-role')
+                                <a href="{{ route('admin.roles.create') }}" class="btn btn-info">ایجاد مقام جدید<i class="fa fa-plus pr-1"></i></a>
+                            @endcan
                         </div>
                     </div>
                 </div>
@@ -41,12 +43,16 @@
                                 <td>{{ $role->name }}</td>
                                 <td>{{ $role->label }}</td>
                                 <td class="d-flex justify-content-center">
-                                    <form action="{{ route('admin.roles.destroy',['role' => $role->id]) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                    <button class="btn btn-sm btn-danger ml-1" type="submit">حذف</button>
-                                    </form>
-                                    <a href="{{ route('admin.roles.edit',['role' => $role->id]) }}" class="btn btn-sm btn-primary">ویرایش</a>
+                                   @can('delete-role')
+                                        <form action="{{ route('admin.roles.destroy',['role' => $role->id]) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-sm btn-danger ml-1" type="submit">حذف</button>
+                                        </form>
+                                    @endcan
+                                    @can('edit-role')
+                                           <a href="{{ route('admin.roles.edit',['role' => $role->id]) }}" class="btn btn-sm btn-primary">ویرایش</a>
+                                    @endcan
                                 </td>
                             </tr>
                         @endforeach
