@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
@@ -15,7 +16,16 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::query();
+
+        if($search = \request('search')){
+            $products->where('title','LIKE',"%$search%")
+                ->orWhere('id','LIKE',"%$search%");
+        }
+
+
+        $products = $products->latest()->paginate(20);
+        return view('admin.products.all',compact('products'));
     }
 
     /**
@@ -25,7 +35,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.products.create');
     }
 
     /**
@@ -36,19 +46,19 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'inventory' => 'required',
+            'price' => 'required'
+        ]);
+
+        auth()->user()->products()->create($data);
+        alert()->success('محصول با موفقیت اضافه شد','عملیات موفق');
+
+        return redirect(route('admin.products.index'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -58,7 +68,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('admin.products.edit',compact('product'));
     }
 
     /**
@@ -70,7 +80,18 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $data = $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'inventory' => 'required',
+            'price' => 'required'
+        ]);
+
+        $product->update($data);
+
+        alert()->success('محصول مورد نظر شما با موفقیت ویرایش شد','عملیات موفق');
+
+        return redirect(route('admin.products.index'));
     }
 
     /**
@@ -81,6 +102,8 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        alert()->success('محصول مورد نظر شما از لیست محصول ها حذف شد','عملیات موفق');
+        return back();
     }
 }

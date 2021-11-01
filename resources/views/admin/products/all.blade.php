@@ -1,14 +1,14 @@
-@component('admin.layouts.content',['title' => 'لیست مقام ها'])
+@component('admin.layouts.content',['title' => 'لیست محصولات'])
     @slot('breadcrumb')
         <li class="breadcrumb-item"><a href="/admin">پنل مدیریت</a></li>
-        <li class="breadcrumb-item active">لیست مقام ها</li>
+        <li class="breadcrumb-item active">لیست محصولات</li>
     @endslot
 
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">مقام ها</h3>
+                    <h3 class="card-title">محصولات</h3>
 
                     <div class="card-tools d-flex">
                         <form action="">
@@ -22,8 +22,8 @@
                         </form>
 
                         <div class="btn-group-sm mr-1">
-                            @can('create-role')
-                                <a href="{{ route('admin.roles.create') }}" class="btn btn-info">ایجاد مقام جدید<i class="fa fa-plus pr-1"></i></a>
+                            @can('create-product')
+                                <a href="{{ route('admin.products.create') }}" class="btn btn-info">ایجاد محصول جدید<i class="fa fa-plus pr-1"></i></a>
                             @endcan
                         </div>
                     </div>
@@ -34,24 +34,29 @@
 
                         <tbody>
                         <tr>
-                            <th>نام مقام</th>
-                            <th>توضیحات</th>
+                            <th>آیدی محصول</th>
+                            <th>نام محصول</th>
+                            <th>تعداد موجودی</th>
+                            <th>تعداد بازدید</th>
                             <th>اقدامات</th>
                         </tr>
-                        @foreach($roles as $role)
+                        @foreach($products as $product)
                             <tr>
-                                <td>{{ $role->name }}</td>
-                                <td>{{ $role->label }}</td>
+                                <td>{{ $product->id }}</td>
+                                <td>{{ $product->title }}</td>
+                                <td>{{ $product->inventory }}</td>
+                                <td>{{ $product->view_count }}</td>
                                 <td class="d-flex justify-content-center">
-                                   @can('delete-role')
-                                        <form action="{{ route('admin.roles.destroy',['role' => $role->id]) }}" method="POST">
+                                    @can('delete-product')
+                                        <form action="{{ route('admin.products.destroy',['product' => $product->id]) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-sm btn-danger ml-1" type="submit">حذف</button>
                                         </form>
                                     @endcan
-                                    @can('edit-role')
-                                           <a href="{{ route('admin.roles.edit',['role' => $role->id]) }}" class="btn btn-sm btn-primary">ویرایش</a>
+
+                                    @can('edit-product')
+                                            <a href="{{ route('admin.products.edit',['product' => $product->id]) }}" class="btn btn-sm btn-primary ml-1">ویرایش</a>
                                     @endcan
                                 </td>
                             </tr>
@@ -62,7 +67,7 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                    {{ $roles->appends(['search' => request('search')])->render() }}
+                    {{ $products->appends(['search' => request('search')])->render() }}
                 </div>
             </div>
             <!-- /.card -->
