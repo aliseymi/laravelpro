@@ -48,7 +48,7 @@
 
                             <div class="col-sm-12">
                                 <input type="number" name="price" class="form-control"
-                                       id="price" placeholder="قیمت را وارد کنید" value="{{ old('price'}}">
+                                       id="price" placeholder="قیمت را وارد کنید" value="{{ old('price') }}">
                             </div>
                         </div>
 

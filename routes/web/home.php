@@ -27,6 +27,22 @@ Route::get('/', function () {
 //        return view('welcome');
 //    }
 
+//    $product = \App\Models\Product::find(2);
+//    $comment = auth()->user()->comments()->create([
+//        'comment' => 'this is my comment',
+//        'commentable_id' => $product->id,
+//        'commentable_type' => 'App\Models\Product'
+//    ]);
+
+//    $product->comments()->create([
+//        'user_id' => auth()->user()->id,
+//        'comment' => 'this is my second comment'
+//    ]);
+
+
+//$comment = \App\Models\Comment::find(1);
+//return $comment->commentable;
+
     return view('welcome');
 });
 
@@ -55,4 +71,6 @@ Route::prefix('profile')->namespace('App\Http\Controllers\Profile')->middleware(
     Route::post('twofactor/phone', 'tokenAuthController@postPhoneVerify');
 });
 
+Route::get('products',[\App\Http\Controllers\ProductController::class,'index']);
+Route::get('products/{product}',[\App\Http\Controllers\ProductController::class,'single']);
 
