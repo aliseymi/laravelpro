@@ -9,8 +9,42 @@
 
             // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
             // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-
         })
+
+        document.querySelector("#sendCommentForm").addEventListener('submit',function (event){
+            event.preventDefault();
+            $('#sendComment').modal('hide')
+            let target = event.target;
+            let data = {
+                commentable_id: target.querySelector("input[name='commentable_id']").value,
+                commentable_type: target.querySelector("input[name='commentable_type']").value,
+                parent_id: target.querySelector("input[name='parent_id']").value,
+                comment: target.querySelector("textarea[name='comment']").value
+            };
+
+            // if(data.comment.length < 2){
+            //     console.error('enter comment more than 2 char!')
+            //     return;
+            // }
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': document.head.querySelector("meta[name='csrf-token']").content,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            $.ajax({
+                url: '/comments',
+                type: 'POST',
+                data: JSON.stringify(data),
+                success: function (data){
+                    console.log(data)
+                }
+            });
+
+
+        });
     </script>
 @endsection
 
@@ -27,7 +61,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                <form action="{{ route('send.comment') }}" method="POST">
+                <form action="{{ route('send.comment') }}" method="POST" id="sendCommentForm">
                     @csrf
                     <div class="modal-body">
 

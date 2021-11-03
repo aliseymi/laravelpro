@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use http\Env\Response;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -28,6 +29,12 @@ class HomeController extends Controller
 
     public function comment(Request $request)
     {
+        if(! $request->ajax()){
+            return \response()->json([
+                'status' => 'just ajax request'
+            ]);
+        }
+
         $validData = $request->validate([
             'commentable_id' => 'required',
             'commentable_type' => 'required',
@@ -38,6 +45,8 @@ class HomeController extends Controller
         auth()->user()->comments()->create($validData);
 
         alert()->success('نظر شما با موفقیت ثبت شد');
-        return back();
+        return response()->json([
+            'status' => 'success'
+        ]);
     }
 }
