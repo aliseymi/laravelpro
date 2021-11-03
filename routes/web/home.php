@@ -74,3 +74,5 @@ Route::prefix('profile')->namespace('App\Http\Controllers\Profile')->middleware(
 Route::get('products',[\App\Http\Controllers\ProductController::class,'index']);
 Route::get('products/{product}',[\App\Http\Controllers\ProductController::class,'single']);
 
+Route::post('comments',[\App\Http\Controllers\HomeController::class,'comment'])->name('send.comment');
+
