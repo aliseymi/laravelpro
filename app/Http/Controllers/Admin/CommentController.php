@@ -15,14 +15,28 @@ class CommentController extends Controller
      */
     public function index()
     {
-        $comments = Comment::whereApprove(1)->latest()->paginate(20);
+        $comments = Comment::query();
+
+        if($keyword = \request('search')){
+            $comments->where('comment','LIKE',"%{$keyword}%")->whereApprove(1)->orWhereHas('user',function ($query) use($keyword){
+                $query->where('name','LIKE',"%{$keyword}%");
+            });
+        }
+        $comments = $comments->whereApprove(1)->latest()->paginate(20);
         return view('admin.comments.approved',compact('comments'));
     }
 
 
     public function unapproved()
     {
-        $comments = Comment::whereApprove(0)->paginate(20);
+        $comments = Comment::query();
+
+        if($keyword = \request('search')){
+            $comments->where('comment','LIKE',"%{$keyword}%")->whereApprove(0)->orWhereHas('user',function ($query) use($keyword){
+                $query->where('name','LIKE',"%{$keyword}%");
+            });
+        }
+        $comments = $comments->whereApprove(0)->paginate(20);
         return view('admin.comments.unapproved',compact('comments'));
     }
 

@@ -43,6 +43,8 @@ Route::get('/', function () {
 //$comment = \App\Models\Comment::find(1);
 //return $comment->commentable;
 
+//$product = \App\Models\Product::withCount('comments',)->get();
+//return $product;
 
     return view('welcome');
 });
