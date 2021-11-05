@@ -43,6 +43,7 @@ Route::get('/', function () {
 //$comment = \App\Models\Comment::find(1);
 //return $comment->commentable;
 
+
     return view('welcome');
 });
 
