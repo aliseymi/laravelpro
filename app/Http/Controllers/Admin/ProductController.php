@@ -50,10 +50,13 @@ class ProductController extends Controller
             'title' => 'required',
             'description' => 'required',
             'inventory' => 'required',
-            'price' => 'required'
+            'price' => 'required',
+            'categories' => 'required|array'
         ]);
 
-        auth()->user()->products()->create($data);
+        $product = auth()->user()->products()->create($data);
+        $product->categories()->sync($data['categories']);
+
         alert()->success('محصول با موفقیت اضافه شد','عملیات موفق');
 
         return redirect(route('admin.products.index'));
@@ -84,10 +87,12 @@ class ProductController extends Controller
             'title' => 'required',
             'description' => 'required',
             'inventory' => 'required',
-            'price' => 'required'
+            'price' => 'required',
+            'categories' => 'required|array'
         ]);
 
         $product->update($data);
+        $product->categories()->sync($data['categories']);
 
         alert()->success('محصول مورد نظر شما با موفقیت ویرایش شد','عملیات موفق');
 

@@ -29,7 +29,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.categories.create');
     }
 
     /**
@@ -40,18 +40,22 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        if($request->parent){
+            $request->validate([
+                'parent' => 'exists:categories,id',
+                'name' => 'required|min:3'
+            ]);
+        }
+        $request->validate([
+            'name' => 'required|min:3'
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Category $category)
-    {
-        //
+        Category::create([
+            'name' => $request->name,
+            'parent' => $request->parent ?? 0
+        ]);
+        alert()->success('دسته بندی با موفقیت اضافه شد');
+        return redirect(route('admin.categories.index'));
     }
 
     /**
@@ -62,7 +66,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('admin.categories.edit',compact('category'));
     }
 
     /**
@@ -74,7 +78,16 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $request->validate([
+            'name' => 'required|min:3'
+        ]);
+
+        $category->update([
+            'name' => $request->name,
+            'parent' => $request->parent
+        ]);
+        alert()->success('دسته بندی با موفقیت ویرایش شد');
+        return redirect(route('admin.categories.index'));
     }
 
     /**
@@ -85,6 +98,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        alert()->success('دسته بندی مورد نظر حذف شد');
+        return redirect(route('admin.categories.index'));
     }
 }

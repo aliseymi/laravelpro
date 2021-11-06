@@ -5,6 +5,15 @@
         <li class="breadcrumb-item active">ایجاد محصول</li>
     @endslot
 
+    @slot('script')
+        <script>
+            $('#categories').select2({
+                'placeholder': 'لطفا دسته بندی های مورد نظر را انتخاب کنید',
+                dir: 'rtl'
+            });
+        </script>
+    @endslot
+
     <div class="row">
         <div class="col-lg-12">
             @include('admin.layouts.error')
@@ -49,6 +58,18 @@
                             <div class="col-sm-12">
                                 <input type="number" name="price" class="form-control"
                                        id="price" placeholder="قیمت را وارد کنید" value="{{ old('price') }}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="categories" class="col-sm-2 control-label">دسته بندی ها</label>
+
+                            <div class="col-sm-12">
+                                <select name="categories[]" class="form-control" id="categories" multiple>
+                                    @foreach(\App\Models\Category::all() as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 

@@ -18,6 +18,6 @@ Route::resource('products',\App\Http\Controllers\Admin\ProductController::class)
 Route::get('comments/unapproved',[\App\Http\Controllers\Admin\CommentController::class,'unapproved'])->name('comments.unapproved');
 Route::resource('comments',\App\Http\Controllers\Admin\CommentController::class)->only(['index','update','destroy']);
 
-Route::resource('categories',\App\Http\Controllers\CategoryController::class);
+Route::resource('categories',\App\Http\Controllers\CategoryController::class)->except(['show']);
 
 

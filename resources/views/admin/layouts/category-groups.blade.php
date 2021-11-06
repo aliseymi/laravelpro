@@ -4,13 +4,13 @@
             <div class="d-flex">
                 <span>{{ $cate->name }}</span>
                 <div class="actions mr-2">
-                    <form action="" id="" method="POST">
+                    <form action="{{ route('admin.categories.destroy',$cate->id) }}" method="POST" id="cate-{{ $cate->id }}-delete">
                         @csrf
-                        @method('delete')
+                        @method('DELETE')
                     </form>
-                    <a href="#" class="badge badge-danger">حذف</a>
-                    <a href="#" class="badge badge-primary">ویرایش</a>
-                    <a href="#" class="badge badge-warning">ثبت زیر دسته</a>
+                    <a href="#" onclick="event.preventDefault(); document.getElementById('cate-{{ $cate->id }}-delete').submit()" class="badge badge-danger">حذف</a>
+                    <a href="{{ route('admin.categories.edit', $cate->id) }}" class="badge badge-primary">ویرایش</a>
+                    <a href="{{ route('admin.categories.create') }}?parent={{ $cate->id }}" class="badge badge-warning">ثبت زیر دسته</a>
                 </div>
             </div>
             @if($cate->child->count())

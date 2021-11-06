@@ -19,6 +19,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" type="text/css" />
+
 </head>
 <body>
     <div id="app">
@@ -77,6 +78,7 @@
             </div>
         </nav>
 
+        @include('layouts.list-categories',['categories' => \App\Models\Category::whereParent(0)->get()])
         <main class="py-4">
             @yield('content')
         </main>
