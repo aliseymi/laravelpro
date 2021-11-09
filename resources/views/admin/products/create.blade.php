@@ -11,6 +11,57 @@
                 'placeholder': 'لطفا دسته بندی های مورد نظر را انتخاب کنید',
                 dir: 'rtl'
             });
+
+            let createNewAttr = ({attributes,id}) => {
+                return `
+                    <div class="row" id="attribute-${id}">
+                        <div class="col-5">
+                            <div class="form-group">
+                                <label>عنوان ویژگی</label>
+                                <select name="attributes[${id}][name]" onchange="changeAttributeValues(event,${id});" class="attribute-select form-control">
+                                    <option value="">انتخاب کنید</option>
+                                    ${
+                    attributes.map(function (item){
+                        return `<option value="${item}">${item}</option>`;
+                    })
+                }
+                                </select>
+                            </div>
+                        </div>
+                          <div class="col-5">
+                                <div class="from-group">
+                                    <label>مقدار ویژگی</label>
+                                    <select name="attributes[${id}][value]" class="attribute-select form-control">
+                                        <option value="">انتخاب کنید</option>
+                                    </select>
+                                </div>
+                          </div>
+                    <div class="col-2">
+                        <label>اقدامات</label>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-warning" onclick="document.getElementById('attribute-${id}').remove()">حذف</button>
+                        </div>
+                    </div>
+                    </div>
+
+               `;
+            }
+
+            $('#add_product_attribute').click(function (){
+               let attributesSection = $('#attribute_section');
+               let id = attributesSection.children().length
+
+                attributesSection.append(
+                    createNewAttr({
+                        attributes: [],
+                        id
+                    })
+                );
+
+                $('.attribute-select').select2({tags: true,dir: 'rtl'});
+            });
+
+
         </script>
     @endslot
 
@@ -71,7 +122,12 @@
                                     @endforeach
                                 </select>
                             </div>
+
                         </div>
+                        <h6>ویژگی محصول</h6>
+                        <hr>
+                        <div id="attribute_section"></div>
+                        <button type="button" class="btn btn-sm btn-danger" id="add_product_attribute">ویژگی جدید</button>
 
                     </div>
                     <!-- /.card-body -->

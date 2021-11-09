@@ -11,7 +11,6 @@
             // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
             let modal = $(this);
             let parent_id = button.data('id');
-            console.log(parent_id)
             modal.find('input[name="parent_id"]').val(parent_id);
         })
 
