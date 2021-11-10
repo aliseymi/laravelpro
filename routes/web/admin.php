@@ -19,5 +19,6 @@ Route::get('comments/unapproved',[\App\Http\Controllers\Admin\CommentController:
 Route::resource('comments',\App\Http\Controllers\Admin\CommentController::class)->only(['index','update','destroy']);
 
 Route::resource('categories',\App\Http\Controllers\CategoryController::class)->except(['show']);
+Route::post('attribute/values',[\App\Http\Controllers\Admin\AttributeController::class,'getValues']);
 
 

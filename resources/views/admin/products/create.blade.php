@@ -12,7 +12,37 @@
                 dir: 'rtl'
             });
 
+            let changeAttributeValues = (event,id) => {
+                let valueBox = $(`select[name='attributes[${id}][value]']`);
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                $.ajax({
+                    url: '/admin/attribute/values',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        name: event.target.value
+                    }),
+                    success: function (res){
+                       valueBox.html(`
+                            <option value="" selected>انتخاب کنید</option>
+                            ${
+                           res.data.map(function (item){
+                               return `<option value="${item}">${item}</option>`;
+                           })
+                       }
+                       `);
+                    }
+                });
+            }
+
             let createNewAttr = ({attributes,id}) => {
+
                 return `
                     <div class="row" id="attribute-${id}">
                         <div class="col-5">
@@ -51,9 +81,10 @@
                let attributesSection = $('#attribute_section');
                let id = attributesSection.children().length
 
+                let attributes = $('#attributes').data('attributes');
                 attributesSection.append(
                     createNewAttr({
-                        attributes: [],
+                        attributes,
                         id
                     })
                 );
@@ -74,6 +105,7 @@
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
+                <div id="attributes" data-attributes="{{ json_encode(\App\Models\Attribute::all()->pluck('name')) }}"></div>
                 <form class="form-horizontal" action="{{ route('admin.products.store') }}" method="POST">
                     @csrf
                     <div class="card-body">
