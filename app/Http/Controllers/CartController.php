@@ -8,12 +8,16 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+    public function cart()
+    {
+        return view('home.cart');
+    }
+
     public function addToCart(Product $product)
     {
-        return Cart::all();
         if(!Cart::has($product)){
             Cart::put([
-                'quantity' => 100,
+                'quantity' => 1,
                 'price' => $product->price
             ],$product);
         }
