@@ -79,3 +79,8 @@ Route::get('products/{product}',[\App\Http\Controllers\ProductController::class,
 
 Route::post('comments',[\App\Http\Controllers\HomeController::class,'comment'])->name('send.comment');
 
+Route::post('cart/add/{product}',[\App\Http\Controllers\CartController::class,'addToCart'])->name('cart.add');
+Route::get('cart',function (){
+    dd(Cart::get(2));
+});
+
