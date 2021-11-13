@@ -15,13 +15,37 @@ class CartController extends Controller
 
     public function addToCart(Product $product)
     {
-        if(!Cart::has($product)){
+        if (Cart::has($product)) {
+            if (Cart::count($product) < $product->inventory) {
+                Cart::update($product, 1);
+            }
+        } else {
             Cart::put([
                 'quantity' => 1,
                 'price' => $product->price
-            ],$product);
+            ], $product);
         }
 
-        return 'ok';
+        return redirect('/cart');
+    }
+
+    public function quantityChange(Request $request)
+    {
+        $data = $request->validate([
+            'id' => 'required',
+            'quantity' => 'required',
+//            'cart' => 'required'
+        ]);
+
+        if (Cart::has($data['id'])) {
+
+            Cart::update($data['id'], [
+                'quantity' => $data['quantity']
+            ]);
+
+            return response(['status' => 'success']);
+        }
+
+        return response(['status' => 'error'], 404);
     }
 }
