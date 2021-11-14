@@ -22,7 +22,6 @@ class CartController extends Controller
         } else {
             Cart::put([
                 'quantity' => 1,
-                'price' => $product->price
             ], $product);
         }
 

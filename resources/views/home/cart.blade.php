@@ -89,7 +89,7 @@
 
                     @php
                         $totalPrice = Cart::all()->sum(function ($cart){
-                            return $cart['price'] * $cart['quantity'];
+                            return $cart['product']->price * $cart['quantity'];
                         });
                     @endphp
 
