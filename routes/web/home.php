@@ -66,18 +66,27 @@ Route::get('/secret', function () {
     return 'secret';
 })->middleware(['auth', 'password.confirm']);
 
-Route::prefix('profile')->namespace('App\Http\Controllers\Profile')->middleware('auth')->group(function () {
-    Route::get('/', 'indexController@index')->name('profile');
-    Route::get('twofactor', 'twoFactorAuthController@manageTwoFactor')->name('profile.2fa.manage');
-    Route::post('twofactor', 'twoFactorAuthController@postMangeTwoFactor');
-    Route::get('twofactor/phone', 'tokenAuthController@getPhoneVerify')->name('profile.2fa.phone');
-    Route::post('twofactor/phone', 'tokenAuthController@postPhoneVerify');
+
+Route::middleware('auth')->group(function (){
+
+    Route::prefix('profile')->namespace('App\Http\Controllers\Profile')->group(function () {
+        Route::get('/', 'indexController@index')->name('profile');
+        Route::get('twofactor', 'twoFactorAuthController@manageTwoFactor')->name('profile.2fa.manage');
+        Route::post('twofactor', 'twoFactorAuthController@postMangeTwoFactor');
+        Route::get('twofactor/phone', 'tokenAuthController@getPhoneVerify')->name('profile.2fa.phone');
+        Route::post('twofactor/phone', 'tokenAuthController@postPhoneVerify');
+    });
+
+    Route::post('comments',[\App\Http\Controllers\HomeController::class,'comment'])->name('send.comment');
+    Route::post('payment',[\App\Http\Controllers\PaymentController::class,'payment'])->name('cart.payment');
 });
+
+
 
 Route::get('products',[\App\Http\Controllers\ProductController::class,'index']);
 Route::get('products/{product}',[\App\Http\Controllers\ProductController::class,'single']);
 
-Route::post('comments',[\App\Http\Controllers\HomeController::class,'comment'])->name('send.comment');
+
 
 Route::post('cart/add/{product}',[\App\Http\Controllers\CartController::class,'addToCart'])->name('cart.add');
 Route::get('cart',[\App\Http\Controllers\CartController::class,'cart']);

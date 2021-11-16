@@ -103,7 +103,10 @@
 
                             <span class="font-weight-bold">{{ $totalPrice }} تومان</span>
 
-                            <button class="btn btn-primary d-block mt-4 mr-3">پرداخت</button>
+                            <form action="{{ route('cart.payment') }}" method="POST" id="cart-payment">
+                                @csrf
+                            </form>
+                            <button onclick="document.getElementById('cart-payment').submit()" class="btn btn-primary d-block mt-4 mr-3">پرداخت</button>
                         </div>
                     </div>
                 </div>
