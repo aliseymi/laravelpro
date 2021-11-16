@@ -3,15 +3,19 @@
 namespace App\Helpers\Cart;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
 
 class CartService
 {
     protected $cart;
 
+    protected $name = 'default';
+
     public function __construct()
     {
-        $this->cart = session()->get('cart') ?? collect([]);
+//        $this->cart = session()->get($this->name) ?? collect([]);
+        $this->cart = collect(json_decode(request()->cookie($this->name),true)) ?? collect([]);
     }
 
 
@@ -36,7 +40,9 @@ class CartService
 
         $this->cart->put($value['id'],$value);
 
-        session()->put('cart',$this->cart);
+//        session()->put($this->name,$this->cart);
+        Cookie::queue($this->name,$this->cart->toJson(),60 * 24 *7);
+
 
         return $this;
     }
@@ -119,5 +125,44 @@ class CartService
         if(! $this->has($key)) return 0;
 
         return $this->get($key)['quantity'];
+    }
+
+    /**
+     * @param $key
+     * @return bool
+     */
+    public function delete($key)
+    {
+        if($this->has($key)){
+
+            $this->cart = $this->cart->filter(function ($item) use($key){
+                if($key instanceof Model){
+                    return ( $item['subject_id'] != $key->id ) && ( $item['subject_type'] != get_class($key) );
+                }
+
+                return $item['id'] != $key;
+            });
+
+//            session()->put($this->name,$this->cart);
+            Cookie::queue($this->name,$this->cart->toJson(),60 * 24 * 7);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function instance(string $name)
+    {
+//        $this->cart = session()->get($name) ?? collect([]);
+
+        $this->cart = collect(json_decode(request()->cookie($name),true));
+
+        $this->name = $name;
+
+        return $this;
     }
 }

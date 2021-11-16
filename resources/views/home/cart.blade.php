@@ -2,7 +2,7 @@
 
 @section('script')
     <script>
-        function changeQuantity(event,id,cartName = null) {
+        function changeQuantity(event,id,cartName = 'default') {
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content,
@@ -48,7 +48,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach(\Cart::all() as $cart)
+                            @foreach(\Cart::instance('laralearn')->all() as $cart)
 
                                 @if(isset($cart['product']))
                                     @php
@@ -73,14 +73,18 @@
                                         </td>
                                         <td class="text-right font-weight-semibold align-middle p-4">{{ $product->price }} تومان</td>
                                         <td class="align-middle p-4">
-                                            <select name="" onchange="changeQuantity(event,'{{ $cart['id'] }}')" class="form-control text-center">
+                                            <select name="" onchange="changeQuantity(event,'{{ $cart['id'] }}','laralearn')" class="form-control text-center">
                                                 @foreach(range(1,$product->inventory) as $item)
                                                     <option value="{{ $item }}" {{ $item == $cart['quantity'] ? 'selected' : '' }}>{{ $item }}</option>
                                                 @endforeach
                                             </select>
                                         </td>
                                         <td class="text-right font-weight-semibold align-middle p-4">{{ $product->price * $cart['quantity'] }} تومان</td>
-                                        <td class="text-center align-middle px-0"><a href="#" class="shop-tooltip close float-none text-danger">&times;</a></td>
+                                        <form action="{{ route('cart.destroy',$cart['id']) }}" method="POST" id="delete-cart-{{ $product->id }}">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                        <td class="text-center align-middle px-0"><a href="#" onclick="event.preventDefault();document.getElementById('delete-cart-{{ $product->id }}').submit()" class="shop-tooltip close float-none text-danger">&times;</a></td>
                                     </tr>
                                 @endif
                             @endforeach
@@ -88,7 +92,7 @@
                     </table>
 
                     @php
-                        $totalPrice = Cart::all()->sum(function ($cart){
+                        $totalPrice = Cart::instance('laralearn')->all()->sum(function ($cart){
                             return $cart['product']->price * $cart['quantity'];
                         });
                     @endphp

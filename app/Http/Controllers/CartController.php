@@ -15,12 +15,14 @@ class CartController extends Controller
 
     public function addToCart(Product $product)
     {
-        if (Cart::has($product)) {
-            if (Cart::count($product) < $product->inventory) {
-                Cart::update($product, 1);
+        $cart = Cart::instance('laralearn');
+
+        if ($cart->has($product)) {
+            if ($cart->count($product) < $product->inventory) {
+                $cart->update($product, 1);
             }
         } else {
-            Cart::put([
+            $cart->put([
                 'quantity' => 1,
             ], $product);
         }
@@ -33,12 +35,14 @@ class CartController extends Controller
         $data = $request->validate([
             'id' => 'required',
             'quantity' => 'required',
-//            'cart' => 'required'
+            'cart' => 'required'
         ]);
 
-        if (Cart::has($data['id'])) {
+        $cart = Cart::instance($data['cart']);
 
-            Cart::update($data['id'], [
+        if ($cart->has($data['id'])) {
+
+            $cart->update($data['id'], [
                 'quantity' => $data['quantity']
             ]);
 
@@ -46,5 +50,12 @@ class CartController extends Controller
         }
 
         return response(['status' => 'error'], 404);
+    }
+
+    public function deleteFromCart($id)
+    {
+        Cart::delete($id);
+
+        return back();
     }
 }
