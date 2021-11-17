@@ -75,6 +75,8 @@ Route::middleware('auth')->group(function (){
         Route::post('twofactor', 'twoFactorAuthController@postMangeTwoFactor');
         Route::get('twofactor/phone', 'tokenAuthController@getPhoneVerify')->name('profile.2fa.phone');
         Route::post('twofactor/phone', 'tokenAuthController@postPhoneVerify');
+        Route::get('orders',[\App\Http\Controllers\Profile\OrderController::class,'index'])->name('profile.orders');
+        Route::get('orders/{order}',[\App\Http\Controllers\Profile\OrderController::class,'showDetails'])->name('profile.orders.details');
     });
 
     Route::post('comments',[\App\Http\Controllers\HomeController::class,'comment'])->name('send.comment');
