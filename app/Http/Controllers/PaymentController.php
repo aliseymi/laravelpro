@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Cart\Cart;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use PayPing\PayPingException;
 
 class PaymentController extends Controller
 {
@@ -59,5 +61,42 @@ class PaymentController extends Controller
         }
 
         return back();
+    }
+
+    public function callback(Request $request)
+    {
+        $payment = Payment::where('resnumber',$request->clientrefid)->firstOrFail();
+
+        $token = config('services.payping.token');
+
+        $payping = new \PayPing\Payment($token);
+
+        try {
+            if($payping->verify($request->refid, 1000)){
+                $payment->update([
+                    'status' => 1
+                ]);
+
+                $payment->order()->update([
+                    'status' => 'paid'
+                ]);
+
+                alert()->success('پرداخت با موفقیت انجام شد');
+                return redirect('/products');
+
+            }else{
+                alert()->error('پرداخت شما موفق نبود');
+                return redirect('/products');
+            }
+        }
+        catch (PayPingException $e) {
+//            foreach (json_decode($e->getMessage(), true) as $msg) {
+//                echo $msg;
+//            }
+            $errors = collect(json_decode($e->getMessage(),true));
+
+            alert()->error($errors->first());
+            return redirect('/products');
+        }
     }
 }
