@@ -15,10 +15,36 @@
             <tr>
                 <td>{{ $order->id }}</td>
                 <td>{{ jdate($order->created_at)->format('%A %d %B %Y') }}</td>
-                <td>{{ $order->status }}</td>
+                <td style="padding: 10px 0">
+                    @switch($order->status)
+                        @case('unpaid')
+                            پرداخت نشده
+                        @break
+
+                        @case('paid')
+                        پرداخت شده
+                        @break
+
+                        @case('posted')
+                        ارسال شده
+                        @break
+
+                        @case('received')
+                        دریافت شده
+                        @break
+
+                        @case('canceled')
+                        لغو شده
+                        @break
+                    @endswitch
+                </td>
                 <td>{{ $order->tracking_serial ?? 'هنوز ثبت نشده' }}</td>
                 <td>
                     <a href="{{ route('profile.orders.details',$order->id) }}" class="btn btn-sm btn-info">جزئیات سفارش</a>
+
+                    @if($order->status == 'unpaid')
+                        <a href="{{ route('profile.orders.payment',$order->id) }}" class="btn btn-sm btn-warning">پرداخت سفارش</a>
+                    @endif
                 </td>
             </tr>
         @endforeach

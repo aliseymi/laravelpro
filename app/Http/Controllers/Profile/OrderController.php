@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Shetabit\Multipay\Invoice;
+use Shetabit\Payment\Facade\Payment as ShetabitPayment;
 
 class OrderController extends Controller
 {
@@ -20,5 +22,20 @@ class OrderController extends Controller
         $this->authorize('view',$order);
 
         return view('profile.order-details',compact('order'));
+    }
+
+    public function payment(Order $order)
+    {
+        // Create new invoice.
+        $invoice = (new Invoice)->amount(1000);
+
+        return ShetabitPayment::callbackUrl(route('payment.callback'))->purchase($invoice, function($driver, $transactionId) use($order,$invoice) {
+            // Store transactionId in database as we need it to verify payment in the future.
+            $res_number = $invoice->getUuid();
+
+            $order->payments()->create([
+                'resnumber' => $res_number,
+            ]);
+        })->pay()->render();
     }
 }
