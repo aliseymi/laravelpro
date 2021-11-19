@@ -7,6 +7,21 @@
 
     @slot('script')
         <script>
+
+            document.addEventListener("DOMContentLoaded", function() {
+
+                document.getElementById('button-image').addEventListener('click', (event) => {
+                    event.preventDefault();
+
+                    window.open('/file-manager/fm-button', 'fm', 'width=1400,height=800');
+                });
+            });
+
+            // set file link
+            function fmSetLink($url) {
+                document.getElementById('image_label').value = $url;
+            }
+
             $('#categories').select2({
                 'placeholder': 'لطفا دسته بندی های مورد نظر را انتخاب کنید',
                 dir: 'rtl'
@@ -108,7 +123,7 @@
                 <!-- /.card-header -->
                 <!-- form start -->
                 <div id="attributes" data-attributes="{{ json_encode(\App\Models\Attribute::all()->pluck('name')) }}"></div>
-                <form class="form-horizontal" action="{{ route('admin.products.update',$product->id) }}" method="POST">
+                <form class="form-horizontal" action="{{ route('admin.products.update',$product->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PATCH')
                     <div class="card-body">
@@ -120,6 +135,27 @@
                                 <input type="text" name="title" class="form-control" id="inputName"
                                        placeholder="نام محصول را وارد کنید" value="{{ old('title',$product->title) }}">
                             </div>
+                        </div>
+
+                        <div class="form-group">
+
+{{--                            <label for="inputName" class="col-sm-2 control-label">عکس شاخص</label>--}}
+
+{{--                            <div class="col-sm-12">--}}
+{{--                                <input type="file" name="image" class="form-control">--}}
+{{--                            </div>--}}
+
+                            <div class="input-group">
+                                <input type="text" dir="ltr" id="image_label" class="form-control" name="image"
+                                       aria-label="Image" aria-describedby="button-image" value="{{ $product->image }}">
+
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-secondary" type="button" id="button-image">انتخاب</button>
+                                </div>
+                            </div>
+
+                            <img class="w-25 mt-2" src="{{ $product->image }}" alt="product-image">
+
                         </div>
 
                         <div class="form-group">

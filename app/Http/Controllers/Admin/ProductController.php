@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Validation\Rule;
 use function PHPUnit\Framework\isNull;
 
@@ -50,6 +51,8 @@ class ProductController extends Controller
     {
         $data = $request->validate([
             'title' => 'required',
+            'image' => 'required',
+//            'image' => 'required|image|mimes:png,jpg,jpeg|max:2048',
             'description' => 'required',
             'inventory' => 'required',
             'price' => 'required',
@@ -57,10 +60,17 @@ class ProductController extends Controller
             'attributes' => 'array'
         ]);
 
+//        $file = $request->file('image');
+//        $destinationPath = '/images/' . now()->year . '/' . now()->month . '/' . now()->day . '/';
+//        $file->move(public_path($destinationPath),$file->getClientOriginalName());
+//
+//        $data['image'] = $destinationPath . $file->getClientOriginalName();
+
         $product = auth()->user()->products()->create($data);
         $product->categories()->sync($data['categories']);
 
-        $this->attachAttributesForProduct($data, $product);
+        if(isset($data['attributes']))
+            $this->attachAttributesForProduct($data, $product);
 
         alert()->success('محصول با موفقیت اضافه شد','عملیات موفق');
 
@@ -90,6 +100,7 @@ class ProductController extends Controller
     {
         $data = $request->validate([
             'title' => 'required',
+            'image' => 'required',
             'description' => 'required',
             'inventory' => 'required',
             'price' => 'required',
@@ -97,12 +108,28 @@ class ProductController extends Controller
             'attributes' => 'array'
         ]);
 
+//        if($request->file('image')){
+//            $request->validate([
+//                'image' => 'required|image|mimes:png,jpg,jpeg|max:2048'
+//            ]);
+//
+//            if(File::exists(public_path($product->image)))
+//                File::delete(public_path($product->image));
+//
+//            $file = $request->file('image');
+//            $destinationPath = '/images/' . now()->year . '/' . now()->month . '/' . now()->day . '/';
+//            $file->move(public_path($destinationPath),$file->getClientOriginalName());
+//
+//            $data['image'] = $destinationPath . $file->getClientOriginalName();
+//        }
+
         $product->update($data);
         $product->categories()->sync($data['categories']);
 
         $product->attributes()->detach();
 
-        $this->attachAttributesForProduct($data, $product);
+        if(isset($data['attributes']))
+            $this->attachAttributesForProduct($data, $product);
 
         alert()->success('محصول مورد نظر شما با موفقیت ویرایش شد','عملیات موفق');
 
