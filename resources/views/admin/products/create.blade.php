@@ -6,7 +6,25 @@
     @endslot
 
     @slot('script')
+{{--        <script src="/js/ckeditor-4/ckeditor.js"></script>--}}
+        <script src="/js/ckeditor/ckeditor.js"></script>
+{{--        <script src="/js/ckeditor5-build-classic/ckeditor.js"></script>--}}
+{{--<script src="/js/tinymce/js/tinymce/tinymce.min.js"></script>--}}
         <script>
+
+            // CKEDITOR.replace('description');
+
+            CKEDITOR.replace('description', {filebrowserImageBrowseUrl: '/file-manager/ckeditor'});
+
+            // ClassicEditor
+            //             .create( document.querySelector( '#description' ) )
+            //             .catch( error => {
+            //                 console.error( error );
+            //             } );
+
+            // tinymce.init({
+            //     selector: "#description"
+            // });
 
             document.addEventListener("DOMContentLoaded", function() {
 
