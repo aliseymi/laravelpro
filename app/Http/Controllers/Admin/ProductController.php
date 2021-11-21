@@ -7,6 +7,7 @@ use App\Models\Attribute;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use function PHPUnit\Framework\isNull;
 
@@ -107,6 +108,7 @@ class ProductController extends Controller
             'categories' => 'required|array',
             'attributes' => 'array'
         ]);
+
 
 //        if($request->file('image')){
 //            $request->validate([

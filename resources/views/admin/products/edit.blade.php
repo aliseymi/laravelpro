@@ -142,7 +142,7 @@
 {{--                            <label for="inputName" class="col-sm-2 control-label">عکس شاخص</label>--}}
 
 {{--                            <div class="col-sm-12">--}}
-{{--                                <input type="file" name="image" class="form-control">--}}
+{{--                                <input type="file" name="file" class="form-control">--}}
 {{--                            </div>--}}
 
                             <div class="input-group">

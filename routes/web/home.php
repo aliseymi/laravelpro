@@ -46,6 +46,8 @@ Route::get('/', function () {
 //$product = \App\Models\Product::withCount('comments',)->get();
 //return $product;
 
+//    return \Illuminate\Support\Facades\URL::temporarySignedRoute('download.file',now()->addMinutes(30),['user' => auth()->user()->id,'path' => 'files/380534.png']);
+
     return view('welcome');
 });
 
@@ -96,3 +98,8 @@ Route::post('cart/add/{product}',[\App\Http\Controllers\CartController::class,'a
 Route::get('cart',[\App\Http\Controllers\CartController::class,'cart']);
 Route::patch('cart/quantity/change',[\App\Http\Controllers\CartController::class,'quantityChange']);
 Route::delete('cart/delete/{cart}',[\App\Http\Controllers\CartController::class,'deleteFromCart'])->name('cart.destroy');
+
+Route::get('download/{user}/file',function ($file){
+    // query ?path
+    return \Illuminate\Support\Facades\Storage::download(request('path'));
+})->name('download.file')->middleware('signed');
