@@ -15,41 +15,43 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-//    $user = \App\Models\User::find(4);
-//    $user->notify(new \App\Notifications\LoginToWebsite());
-
-//    $container = new \App\Container();
-//    $container->bind('fooService',function (){
-//        return new FooService();
-//    });
-
-//    if(Gate::allows('edit-user')){
-//        return view('welcome');
-//    }
-
-//    $product = \App\Models\Product::find(2);
-//    $comment = auth()->user()->comments()->create([
-//        'comment' => 'this is my comment',
-//        'commentable_id' => $product->id,
-//        'commentable_type' => 'App\Models\Product'
-//    ]);
-
-//    $product->comments()->create([
-//        'user_id' => auth()->user()->id,
-//        'comment' => 'this is my second comment'
-//    ]);
-
-
-//$comment = \App\Models\Comment::find(1);
-//return $comment->commentable;
-
-//$product = \App\Models\Product::withCount('comments',)->get();
-//return $product;
-
-//    return \Illuminate\Support\Facades\URL::temporarySignedRoute('download.file',now()->addMinutes(30),['user' => auth()->user()->id,'path' => 'files/380534.png']);
-
+////    $user = \App\Models\User::find(4);
+////    $user->notify(new \App\Notifications\LoginToWebsite());
+//
+////    $container = new \App\Container();
+////    $container->bind('fooService',function (){
+////        return new FooService();
+////    });
+//
+////    if(Gate::allows('edit-user')){
+////        return view('welcome');
+////    }
+//
+////    $product = \App\Models\Product::find(2);
+////    $comment = auth()->user()->comments()->create([
+////        'comment' => 'this is my comment',
+////        'commentable_id' => $product->id,
+////        'commentable_type' => 'App\Models\Product'
+////    ]);
+//
+////    $product->comments()->create([
+////        'user_id' => auth()->user()->id,
+////        'comment' => 'this is my second comment'
+////    ]);
+//
+//
+////$comment = \App\Models\Comment::find(1);
+////return $comment->commentable;
+//
+////$product = \App\Models\Product::withCount('comments',)->get();
+////return $product;
+//
+////    return \Illuminate\Support\Facades\URL::temporarySignedRoute('download.file',now()->addMinutes(30),['user' => auth()->user()->id,'path' => 'files/380534.png']);
+//
     return view('welcome');
 });
+
+//Route::get('/',[\App\Http\Controllers\IndexController::class,'index']);
 
 Auth::routes(['verify' => true]);
 

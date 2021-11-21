@@ -20,6 +20,8 @@ class ProductController extends Controller
      */
     public function index()
     {
+        $this->seo()->setTitle('بخش محصولات');
+
         $products = Product::query();
 
         if($search = \request('search')){
@@ -39,6 +41,8 @@ class ProductController extends Controller
      */
     public function create()
     {
+        $this->seo()->setTitle('ایجاد محصول');
+
         return view('admin.products.create');
     }
 
@@ -87,6 +91,8 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
+        $this->seo()->setTitle('ویرایش محصول');
+
         return view('admin.products.edit',compact('product'));
     }
 

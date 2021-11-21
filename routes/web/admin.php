@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/',function (){
+    SEO::setTitle('پنل مدیریت');
     return view('admin.index');
 });
 

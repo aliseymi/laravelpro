@@ -9,6 +9,9 @@ class ProductController extends Controller
 {
     public function index()
     {
+        $this->seo()->setTitle('همه محصولات')->setDescription('وبسایت فروشگاهی مانند آمازون')
+            ->opengraph()->setTitle('همه محصولات لارالرن');
+
         $products = Product::latest()->paginate(12);
         return view('home.products',compact('products'));
     }
