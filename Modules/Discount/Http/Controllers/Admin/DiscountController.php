@@ -5,6 +5,8 @@ namespace Modules\Discount\Http\Controllers\Admin;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Config;
+use Modules\Discount\Entities\Discount;
 
 class DiscountController extends Controller
 {
@@ -14,7 +16,9 @@ class DiscountController extends Controller
      */
     public function index()
     {
-        return view('discount::index');
+        $discounts = Discount::latest()->paginate(20);
+
+        return view('discount::admin.all',compact('discounts'));
     }
 
     /**

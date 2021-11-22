@@ -36,6 +36,8 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapApiRoutes();
 
         $this->mapWebRoutes();
+
+        $this->mapAdminRoutes();
     }
 
     /**
@@ -65,5 +67,14 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('api')
             ->namespace($this->moduleNamespace)
             ->group(module_path('Discount', '/Routes/api.php'));
+    }
+
+    protected function mapAdminRoutes()
+    {
+        Route::middleware(['web','auth','auth.admin'])
+            ->namespace($this->moduleNamespace . '\Admin')
+            ->prefix('admin')
+            ->name('admin.')
+            ->group(module_path('Discount','/Routes/admin.php'));
     }
 }
