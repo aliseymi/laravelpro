@@ -71,7 +71,16 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="text-right font-weight-semibold align-middle p-4">{{ $product->price }} تومان</td>
+
+                                        @if(! $cart['discount_percent'])
+                                            <td class="text-right font-weight-semibold align-middle p-4">{{ $product->price }} تومان</td>
+                                        @else
+                                            <td class="text-right font-weight-semibold align-middle p-4">
+                                                <del class="text-danger text-sm">{{ $product->price }} تومان</del>
+                                                <span class="d-block">{{ $product->price - ($product->price * $cart['discount_percent']) }} تومان</span>
+                                            </td>
+                                        @endif
+
                                         <td class="align-middle p-4">
                                             <select name="" onchange="changeQuantity(event,'{{ $cart['id'] }}','laralearn')" class="form-control text-center">
                                                 @foreach(range(1,$product->inventory) as $item)
@@ -79,7 +88,14 @@
                                                 @endforeach
                                             </select>
                                         </td>
-                                        <td class="text-right font-weight-semibold align-middle p-4">{{ $product->price * $cart['quantity'] }} تومان</td>
+                                        @if(! $cart['discount_percent'])
+                                            <td class="text-right font-weight-semibold align-middle p-4">{{ $product->price * $cart['quantity'] }} تومان</td>
+                                        @else
+                                            <td class="text-right font-weight-semibold align-middle p-4">
+                                                <del class="text-danger text-sm">{{ $product->price * $cart['quantity'] }} تومان</del>
+                                                <span class="d-block">{{ ($product->price - ($product->price * $cart['discount_percent'])) * $cart['quantity'] }} تومان</span>
+                                            </td>
+                                        @endif
                                         <form action="{{ route('cart.destroy',$cart['id']) }}" method="POST" id="delete-cart-{{ $product->id }}">
                                             @csrf
                                             @method('DELETE')
@@ -93,9 +109,24 @@
 
                     @php
                         $totalPrice = Cart::instance('laralearn')->all()->sum(function ($cart){
-                            return $cart['product']->price * $cart['quantity'];
+                            return $cart['discount_percent'] == 0
+                                ? $cart['product']->price * $cart['quantity']
+                                : ($cart['product']->price - ($cart['product']->price * $cart['discount_percent'])) * $cart['quantity'];
                         });
                     @endphp
+
+                    <form action="{{ route('cart.discount.check') }}" method="POST" class="mt-3 float-right">
+                        @csrf
+                        <input type="hidden" name="cart" value="laralearn">
+
+                        <input type="text" class="form-control" name="discount" placeholder="کد تخفیف دارید؟">
+
+                        <button type="submit" class="btn btn-success mt-2">اعمال تخفیف</button>
+
+                        @if($errors->has('discount'))
+                            <div class="text-danger text-sm mt-2">{{ $errors->first('discount') }}</div>
+                        @endif
+                    </form>
 
                     <div class="media mt-3 float-left">
                         <div class="media-body">

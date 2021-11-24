@@ -5,6 +5,8 @@ namespace App\Helpers\Cart;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Facade;
+use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\String_;
 
 /**
  * Class Cart
@@ -18,6 +20,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static bool delete(string|Model $key)
  * @method static Cart instance(string $name)
  * @method static Cart flush()
+ * @method static void addDiscount(Integer|string $discount)
  */
 
 class Cart extends Facade
