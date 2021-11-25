@@ -115,7 +115,7 @@
                         });
                     @endphp
 
-                    @if(isActiveModule('Discount'))
+                    @if(Module::isEnable('Discount'))
                         @if($discount = Cart::getDiscount())
                             <div class="mt-4">
                                 <form action="/discount/delete" method="POST" id="discount-delete">
