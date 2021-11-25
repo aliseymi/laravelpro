@@ -2,6 +2,7 @@
     "name": "Main",
     "alias": "مدیریت ماژول",
     "description": "ماژولی برای مدیریت همه ماژول ها",
+    "canDisable": false,
     "keywords": [],
     "priority": 0,
     "providers": [

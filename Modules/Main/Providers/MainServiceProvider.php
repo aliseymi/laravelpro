@@ -5,6 +5,7 @@ namespace Modules\Main\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 use Nwidart\Modules\Facades\Module;
+use Nwidart\Modules\Json;
 
 class MainServiceProvider extends ServiceProvider
 {
@@ -32,6 +33,13 @@ class MainServiceProvider extends ServiceProvider
 
         Module::macro('isEnable',function ($module){
             return in_array($module, array_keys(Module::getByStatus(1)));
+        });
+
+        Module::macro('canDisable',function ($module){
+            $module = Module::find($module);
+            $moduleData = new Json($module->getPath() . '\module.json');
+
+            return is_null($moduleData->get('canDisable')) || $moduleData->get('canDisable') == true;
         });
     }
 

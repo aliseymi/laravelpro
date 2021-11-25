@@ -15,4 +15,24 @@ class ModuleController extends Controller
 
         return view('main::admin.modules.all',compact('modules'));
     }
+
+    public function disable($module)
+    {
+        $module = Module::find($module);
+
+        if(Module::canDisable($module->getName()))
+            $module->disable();
+
+        return back();
+    }
+
+    public function enable($module)
+    {
+        $module = Module::find($module);
+
+        if(Module::canDisable($module->getName()))
+            $module->enable();
+
+        return back();
+    }
 }

@@ -21,14 +21,26 @@
 
                             <div class="col-sm-2">
                                 <div class="mt-3">
-                                    <h4>{{ $moduleData->alias }}</h4>
-                                    <p>{{ $moduleData->description }}</p>
+                                    <h4>{{ $moduleData->get('alias') }}</h4>
+                                    <p>{{ $moduleData->get('description') }}</p>
                                 </div>
 
-                                @if(Module::isEnable($module->getName()))
-                                    <a href="#" class="btn btn-sm btn-danger">غیرفعالسازی</a>
-                                @else
-                                    <a href="#" class="btn btn-sm btn-primary">فعالسازی</a>
+                                @if(Module::canDisable($module->getName()))
+                                    @if(Module::isEnable($module->getName()))
+                                        <form action="{{ route('admin.modules.disable',['module' => $module->getName()]) }}" method="POST" id="{{ $module->getName() }}-disable">
+                                            @csrf
+                                            @method('PATCH')
+                                        </form>
+
+                                        <a href="#" onclick="event.preventDefault();document.getElementById('{{ $module->getName() }}-disable').submit()" class="btn btn-sm btn-danger">غیرفعالسازی</a>
+                                    @else
+                                        <form action="{{ route('admin.modules.enable',['module' => $module->getName()]) }}" method="POST" id="{{ $module->getName() }}-enable">
+                                            @csrf
+                                            @method('PATCH')
+                                        </form>
+
+                                        <a href="#" onclick="event.preventDefault();document.getElementById('{{ $module->getName() }}-enable').submit()" class="btn btn-sm btn-primary">فعالسازی</a>
+                                    @endif
                                 @endif
                             </div>
                         @endforeach
