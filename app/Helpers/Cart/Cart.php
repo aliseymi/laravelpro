@@ -21,6 +21,7 @@ use phpDocumentor\Reflection\Types\String_;
  * @method static Cart instance(string $name)
  * @method static Cart flush()
  * @method static void addDiscount(Integer|string $discount)
+ * @method static mixed getDiscount()
  */
 
 class Cart extends Facade

@@ -115,18 +115,32 @@
                         });
                     @endphp
 
-                    <form action="{{ route('cart.discount.check') }}" method="POST" class="mt-3 float-right">
-                        @csrf
-                        <input type="hidden" name="cart" value="laralearn">
+                    @if($discount = Cart::getDiscount())
+                        <div class="mt-4">
+                            <form action="/discount/delete" method="POST" id="discount-delete">
+                                @csrf
+                                @method('DELETE')
 
-                        <input type="text" class="form-control" name="discount" placeholder="کد تخفیف دارید؟">
+                                <input type="hidden" name="cart" value="laralearn">
+                            </form>
 
-                        <button type="submit" class="btn btn-success mt-2">اعمال تخفیف</button>
+                            <span>کد تخفیف : <span class="text-success">{{ $discount->code }}</span><a href="#" onclick="event.preventDefault();document.getElementById('discount-delete').submit()" class="align-middle badge badge-danger mr-1">حذف کد</a></span>
+                            <span class="d-block">درصد تخفیف : <span class="text-success">{{ $discount->percent }} درصد</span></span>
+                        </div>
+                    @else
+                        <form action="{{ route('cart.discount.check') }}" method="POST" class="mt-3 float-right">
+                            @csrf
+                            <input type="hidden" name="cart" value="laralearn">
 
-                        @if($errors->has('discount'))
-                            <div class="text-danger text-sm mt-2">{{ $errors->first('discount') }}</div>
-                        @endif
-                    </form>
+                            <input type="text" class="form-control" name="discount" placeholder="کد تخفیف دارید؟">
+
+                            <button type="submit" class="btn btn-success mt-2">اعمال تخفیف</button>
+
+                            @if($errors->has('discount'))
+                                <div class="text-danger text-sm mt-2">{{ $errors->first('discount') }}</div>
+                            @endif
+                        </form>
+                    @endif
 
                     <div class="media mt-3 float-left">
                         <div class="media-body">

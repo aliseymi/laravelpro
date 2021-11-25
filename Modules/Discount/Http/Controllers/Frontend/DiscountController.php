@@ -45,4 +45,13 @@ class DiscountController extends Controller
 
         return back();
     }
+
+    public function destroy(Request $request)
+    {
+        $cart = Cart::instance($request->cart);
+
+        $cart->addDiscount(null);
+
+        return back();
+    }
 }

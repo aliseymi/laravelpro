@@ -211,6 +211,14 @@ class CartService
         $this->setCookie();
     }
 
+    /**
+     * @return mixed
+     */
+    public function getDiscount()
+    {
+        return Discount::where('code', $this->cart['discount'])->first();
+    }
+
     protected function checkDiscountValidate(mixed $item, mixed $discount)
     {
         $discount = Discount::whereCode($discount)->first();
