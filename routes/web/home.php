@@ -95,12 +95,6 @@ Route::get('products',[\App\Http\Controllers\ProductController::class,'index']);
 Route::get('products/{product}',[\App\Http\Controllers\ProductController::class,'single']);
 
 
-
-Route::post('cart/add/{product}',[\App\Http\Controllers\CartController::class,'addToCart'])->name('cart.add');
-Route::get('cart',[\App\Http\Controllers\CartController::class,'cart']);
-Route::patch('cart/quantity/change',[\App\Http\Controllers\CartController::class,'quantityChange']);
-Route::delete('cart/delete/{cart}',[\App\Http\Controllers\CartController::class,'deleteFromCart'])->name('cart.destroy');
-
 Route::get('download/{user}/file',function ($file){
     // query ?path
     return \Illuminate\Support\Facades\Storage::download(request('path'));
