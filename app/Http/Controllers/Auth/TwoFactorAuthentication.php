@@ -38,6 +38,4 @@ trait TwoFactorAuthentication
 
         return redirect(route('2fa.token'));
     }
-
-
 }
